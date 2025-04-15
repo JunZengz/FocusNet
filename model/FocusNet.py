@@ -5,21 +5,6 @@ from .attention_module import FocusAttention, ChannelAttention, SpatialAttention
 from .layers import BasicConv2d, DeformableConv2d, eca_layer
 from .pvtv2 import pvt_v2_b4
 
-def bce_iou_loss(pred, mask):
-    weight = 1 + 5 * torch.abs(F.avg_pool2d(mask, kernel_size=31, stride=1, padding=15) - mask)
-
-    bce = F.binary_cross_entropy_with_logits(pred, mask, reduction='none')
-
-    pred = torch.sigmoid(pred)
-    inter = pred * mask
-    union = pred + mask
-    iou = 1 - (inter + 1) / (union - inter + 1)
-
-    weighted_bce = (weight * bce).sum(dim=(2, 3)) / weight.sum(dim=(2, 3))
-    weighted_iou = (weight * iou).sum(dim=(2, 3)) / weight.sum(dim=(2, 3))
-
-    return (weighted_bce + weighted_iou).mean()
-
 
 def DiceBCELoss(inputs, targets, smooth=1):
     inputs = torch.sigmoid(inputs)
@@ -34,7 +19,7 @@ def DiceBCELoss(inputs, targets, smooth=1):
 
     return Dice_BCE
 
-
+    
 class _ASPPModuleDeformable(nn.Module):
     def __init__(self, in_channels, planes, kernel_size, padding):
         super(_ASPPModuleDeformable, self).__init__()
@@ -251,4 +236,4 @@ class FocusNet(nn.Module):
 
         loss = loss1 + loss2 + loss3 + loss4
 
-        return {'prediction': out, 'loss': loss, 'encoder_features': pvt, 'context': [f1, f2, f3, f4], 'out': [out1, out2, out3, out4], 'x_t': x_t, 'res_out': [res_a3, res_a4]}
+        return {'prediction': out, 'loss': loss}
