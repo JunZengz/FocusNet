@@ -33,7 +33,12 @@ python test_modality_wise.py
 ## Citation
 Please cite our paper if you find the work useful:
 ```
-to be updated
+@article{zeng2025focusnet,
+  title={FocusNet: Transformer-enhanced Polyp Segmentation with Local and Pooling Attention},
+  author={Zeng, Jun and Santosh, KC and Nayak, Deepak Rajan and de Lange, Thomas and Varkey, Jonas and Berzin, Tyler and Jha, Debesh},
+  journal={arXiv preprint arXiv:2504.13597},
+  year={2025}
+}
 ```
 
 ## Contact
